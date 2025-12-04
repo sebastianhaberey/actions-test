@@ -16,7 +16,7 @@ jobs:
 
   job-b:
     needs: [ job-a ]
-    if: ${{ always() }}
+    if: ${{ always() && needs.job-a.result != 'failed' }}
     runs-on: ubuntu-latest
 
     steps:
