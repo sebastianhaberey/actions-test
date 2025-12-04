@@ -14,10 +14,10 @@ jobs:
         run: |
           echo "Step 1"
 
-#      - name: Fail
-#        run: |
-#          echo "Fail"
-#          exit 1
+      - name: Fail
+        run: |
+          echo "Fail"
+          exit 1
 
   job-b:
     needs: [ job-a ]
