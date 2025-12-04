@@ -1,0 +1,25 @@
+name: Github Actions Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  job-a:
+    runs-on: ubuntu-latest
+    if: ${{ false }}
+
+    steps:
+      - name: Debug
+        run: |
+          echo "Step 1"
+
+  job-b:
+    needs: [ job-a ]
+    runs-on: ubuntu-latest
+    if: ${{ needs.job-a.result != 'failed' || needs.job-a.result != 'cancelled' }}
+
+    steps:
+      - name: Debug
+        run: |
+          echo "needs: ${{ toJson(needs) }}"
