@@ -1,7 +1,7 @@
 name: Github Actions Test
 
 on:
-  workflow_dispatch:
+  push:
 
 jobs:
 
@@ -17,7 +17,6 @@ jobs:
   job-b:
     needs: [ job-a ]
     runs-on: ubuntu-latest
-    if: ${{ needs.job-a.result != 'failed' || needs.job-a.result != 'cancelled' }}
 
     steps:
       - name: Debug
