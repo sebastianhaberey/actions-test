@@ -21,7 +21,7 @@ jobs:
 
   job-b:
     needs: [ job-a ]
-    if: ${{ always() && needs.job-a.result != 'failed' }}
+    if: ${{ always() && needs.job-a.result == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
