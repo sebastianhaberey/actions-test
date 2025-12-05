@@ -3,21 +3,24 @@ name: Github Actions Test
 on:
   push:
 
+env:
+  DRY_RUN: true
+
 jobs:
 
   job-a:
     runs-on: ubuntu-latest
-    if: ${{ true }}
+    if: ${{ env.DRY_RUN == 'true' }}
 
     steps:
       - name: Debug
         run: |
           echo "Step 1"
 
-      - name: Fail
-        run: |
-          echo "Fail"
-          exit 1
+#      - name: Fail
+#        run: |
+#          echo "Fail"
+#          exit 1
 
   job-b:
     needs: [ job-a ]
