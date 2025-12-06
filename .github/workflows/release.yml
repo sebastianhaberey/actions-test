@@ -26,7 +26,7 @@ jobs:
       - name: Live detect
         id: live-detect
         run: |
-          INPUT_LIVE="${{ github.event.inputs.live }}"
+          INPUT_LIVE="${{ github.event.inputs.live || false }}"
 
           if [[ "$GITHUB_REF" =~ ^refs/tags/ ]]; then
             LIVE=true
