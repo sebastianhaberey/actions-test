@@ -34,7 +34,7 @@ jobs:
             REASON="tag"
           elif [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
             LIVE=$INPUT_LIVE
-            REASON="main branch, live: $INPUT_LIVE"
+            REASON="main branch, live mode selected: $INPUT_LIVE"
           else
             LIVE=false
             REASON="not main branch"
