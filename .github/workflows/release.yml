@@ -2,6 +2,7 @@ name: Github Actions Test
 
 on:
   push:
+  pull_request:
   workflow_dispatch:
     inputs:
       live:
