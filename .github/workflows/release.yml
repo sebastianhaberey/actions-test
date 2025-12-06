@@ -28,10 +28,10 @@ jobs:
         run: |
           INPUT_LIVE="${{ github.event.inputs.live }}"
 
-          if [[ "$GITUB_REF" =~ ^refs/tags/ ]]; then
+          if [[ "$GITHUB_REF" =~ ^refs/tags/ ]]; then
             LIVE=true
             REASON="tag"
-          elif [[ "$GITUB_REF" == "refs/heads/main" ]]; then
+          elif [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
             LIVE=$INPUT_LIVE
             REASON="main branch, live: $INPUT_LIVE"
           else
