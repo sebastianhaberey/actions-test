@@ -2,6 +2,12 @@ name: Github Actions Test
 
 on:
   push:
+  workflow_dispatch:
+    inputs:
+      live:
+        description: "Live mode"
+        type: boolean
+        default: false
 
 env:
   DRY_RUN: true
@@ -10,24 +16,45 @@ jobs:
 
   job-a:
     runs-on: ubuntu-latest
-    if: ${{ env.DRY_RUN == 'true' }}
 
     steps:
-      - name: Debug
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Live detect
+        id: live-detect
         run: |
-          echo "Step 1"
+          INPUT_LIVE="${{ github.event.inputs.live }}"
 
-#      - name: Fail
-#        run: |
-#          echo "Fail"
-#          exit 1
+          if [[ "$GITUB_REF" =~ ^refs/tags/ ]]; then
+            LIVE=true
+            REASON="tag"
+          elif [[ "$GITUB_REF" == "refs/heads/main" ]]; then
+            LIVE=$INPUT_LIVE
+            REASON="main branch, live: $INPUT_LIVE"
+          else
+            LIVE=false
+            REASON="not main branch"
+          fi
+          
+          echo "live=$LIVE" >> $GITHUB_OUTPUT
+          echo "::notice::Trigger ref: $GITHUB_REF, live mode: $LIVE ($REASON)"
 
-  job-b:
-    needs: [ job-a ]
-    if: ${{ always() && (needs.job-a.result == 'success' || needs.job-a.result == 'skipped') }}
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Debug
+      - name: Tag & SHA detect
         run: |
-          echo "needs: ${{ toJson(needs) }}"
+          TAG=$(git describe --tags --abbrev=0) # find latest tag
+          SHA=$(git rev-list -n 1 "$TAG")
+          VERSION="${TAG#v}"
+
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+          echo "::notice::Tag: $TAG, SHA: $SHA, Version: $VERSION"
+
+          echo "Repository:    $GITHUB_REPOSITORY"
+          echo "Workflow name: $GITHUB_WORKFLOW"
+          echo "Workflow file: $GITHUB_WORKFLOW_REF"
+
