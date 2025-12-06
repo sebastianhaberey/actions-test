@@ -14,7 +14,8 @@ env:
 
 jobs:
 
-  job-a:
+  discover:
+    name: Discover
     runs-on: ubuntu-latest
 
     steps:
