@@ -38,7 +38,7 @@ jobs:
               REASON="requested"
             else
               LIVE=false
-              REASON "not requested"
+              REASON="not requested"
             fi
           else
             LIVE=false
